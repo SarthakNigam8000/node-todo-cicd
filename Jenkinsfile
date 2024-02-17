@@ -22,7 +22,7 @@ pipeline {
         }
        stage("push"){
             steps{
-                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                withCredentials([string(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
                 echo 'image push ho raha hai'
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
                     
