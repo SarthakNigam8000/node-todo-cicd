@@ -20,19 +20,18 @@ pipeline {
                 echo 'image scanning ho gayi'
             }
         }
-     stage("push") {
-         steps {
-            withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                echo 'image push ho raha hai'
-                sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}" 
-                echo 'Login succeeded into Docker'
-                sh "docker tag node-app-test-new:latest ${dockerHubUser}/node-app-test-new:latest"
-                echo 'Image is tagged'
-                sh "docker push ${dockerHubUser}/node-app-test-new:latest"
-                echo 'Image push ho gaya'
-        } 
-         }
-}
+    stage("push") {   
+    steps {
+        withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {            echo 'image push ho raha hai'
+            sh "echo ${dockerHubPass} | docker login -u ${dockerHubUser} --password-stdin"
+            echo 'Login succeeded into Docker'
+            sh "docker tag node-app-test-new:latest ${dockerHubUser}/node-app-test-new:latest"
+            echo 'Image is tagged'
+            sh "docker push ${dockerHubUser}/node-app-test-new:latest"
+            echo 'Image push ho gaya'     
+              }
+          }
+              }
         
         stage("deploy"){
             steps{
@@ -42,3 +41,42 @@ pipeline {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
