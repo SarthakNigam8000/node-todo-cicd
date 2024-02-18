@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+     agent { label "dev-server"}
     
     stages {
         
@@ -22,13 +22,21 @@ pipeline {
         }
     stage("push") {   
     steps {
-        withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {            echo 'image push ho raha hai'
+        withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
+            
+            echo 'image push started'
+            
             sh "echo ${dockerHubPass} | docker login -u ${dockerHubUser} --password-stdin"
+            
             echo 'Login succeeded into Docker'
+            
             sh "docker tag node-app-test-new:latest ${dockerHubUser}/node-app-test-new:latest"
+            
             echo 'Image is tagged'
+            
             sh "docker push ${dockerHubUser}/node-app-test-new:latest"
-            echo 'Image push ho gaya'     
+            
+            echo 'Image pushed to docker hub'     
               }
           }
               }
